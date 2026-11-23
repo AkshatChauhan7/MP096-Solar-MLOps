@@ -1,0 +1,11 @@
+# SCSE3040 MLOps Mini Project
+
+- Group ID: G199
+- Problem ID: MP096
+
+## Group Members
+
+- S24CSEU1804
+- S24CSEU1814
+- S24CSEU1786
+- S24CSEU1803
