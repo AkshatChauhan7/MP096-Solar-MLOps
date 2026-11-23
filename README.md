@@ -3,15 +3,6 @@
 - **Group ID:** G199
 - **Problem ID:** MP096
 
-## Group Members
-
-| Enrolment Number | Role |
-|------------------|------|
-| S24CSEU1804 | Data Lead |
-| S24CSEU1814 | Model Lead |
-| S24CSEU1786 | Service Lead |
-| S24CSEU1803 | Ops Lead |
-
 ## Project Overview
 
 This project implements a complete MLOps pipeline for solar panel power output prediction (MP096). The pipeline covers:
@@ -108,6 +99,3 @@ The pipeline implements:
 - **Champion/Challenger promotion** requiring ≥12% MAE improvement
 - **MLflow model alias** management for production model
 
-## Submission
-
-Deadline: **Sunday, 29 November 2026, 11:59 PM**
