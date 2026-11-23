@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+.git
+.github
+tests
+*.md
+data/raw/*.csv
+mlflow.db
+mlruns
+mlartifacts
+predictions

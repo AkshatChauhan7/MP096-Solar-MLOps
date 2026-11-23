@@ -1,4 +1,3 @@
-
 # Python virtual environments
 .venv/
 venv/
@@ -14,3 +13,22 @@ __pycache__/
 # MLflow artifacts (database will be committed)
 mlruns/
 mlartifacts/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+
+# Predictions output
+predictions/
+
+# Log files
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db

@@ -1,0 +1,56 @@
+# Data paths
+data:
+  raw: "data/raw"
+  processed: "data/processed"
+  train: "data/raw/train.csv"
+  later: "data/raw/later.csv"
+  holdout_features: "data/raw/holdout_features.csv"
+
+# Model paths
+model:
+  registry: "mlruns"
+  artifact_path: "model"
+  champion_alias: "champion"
+
+# Reports paths
+reports:
+  metrics: "reports/metrics.json"
+  psi: "reports/psi.yaml"
+  findings: "reports/findings.yaml"
+  predictions: "predictions/holdout_predictions.csv"
+
+# Model settings
+model_settings:
+  random_state: 42
+  test_size: 0.2
+  n_estimators: 300
+  max_depth: 10
+  min_samples_split: 5
+  min_samples_leaf: 2
+  learning_rate: 0.1
+
+# Training settings
+training:
+  target_column: "energy_kwh"
+  numeric_features:
+    - "panel_area_m2"
+    - "sunshine_hours"
+    - "temp_c"
+    - "dust_days"
+    - "panel_age_yr"
+    - "cloud_cover_pct"
+  categorical_features:
+    - "roof_type"
+    - "area"
+  date_column: "date"
+  leak_columns:
+    - "meter_reading_kwh"
+    - "energy_kwh"
+    - "record_id"
+
+# Monitoring settings
+monitoring:
+  psi_bins: 10
+  psi_threshold: 0.2
+  promotion_threshold: 0.12  # 12% MAE improvement required
+  retrain_split: 0.7  # first 70% of later.csv for retraining

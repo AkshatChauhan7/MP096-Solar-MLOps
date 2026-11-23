@@ -1,66 +1,61 @@
-# MP096 findings --- fill in every value, keep every key.
-# The marking tool reads this file. Write null only where the comment says so.
-# Use the exact column names and group values from your data files.
-
-group_id: "G199"          # your group id, e.g. "G042"
-problem_id: "MP096"
-
+group_id: G199
+problem_id: MP096
 data_issues:
   leaking_column:
     present: true
-    column: "meter_reading_kwh"
-
+    column: meter_reading_kwh
   unit_mixup:
     present: false
     column: null
     group_value: null
     factor: null
-
   sentinel_value:
     present: true
-    column: "dust_days"
+    column: dust_days
     value: 9999
     count: 43
-
   duplicate_rows:
     present: false
     count: 0
-
   stuck_sensor:
     present: true
-    column: "temp_c"
-    start_date: "2026-05-02"
-    end_date: "2026-05-18"
-
+    column: temp_c
+    start_date: '2026-05-02'
+    end_date: '2026-05-18'
   target_typos:
     present: true
     count: 10
-
   spelling_variants:
     present: true
-    column: "roof_type"
+    column: roof_type
     true_levels: 3
-
 tracking:
-  experiment_name: null
-  best_run_id: null        # the MLflow run id of your v1 model
-  registered_model_name: null
-  champion_version: null
-
+  experiment_name: solar-energy-mp096
+  best_run_id: bbfdb4af687f4c9196af72ac1fc1c134
+  registered_model_name: solar-energy-model
+  champion_version: 29
 monitoring:
-  psi:                     # cleaned train.csv vs later.csv, 10 bins
-    panel_area_m2: null
-    sunshine_hours: null
-    temp_c: null
-    dust_days: null
-    panel_age_yr: null
-    cloud_cover_pct: null
-  most_drifted_feature: null
-  mae_by_group:            # v1 on later.csv, per value of area
-    'Old City': null
-    'New Colony': null
-    'Industrial': null
-  worst_served_group: null
-  mae_v1_on_check: null    # v1 on the last 30% of later.csv (by date)
-  mae_v2_on_check: null    # v2 on the same rows
-  decision: null           # promote or keep
+  psi:
+    panel_area_m2: 0.0441
+    sunshine_hours: 0.0429
+    temp_c: 0.1744
+    dust_days: 0.0681
+    panel_age_yr: 9.169
+    cloud_cover_pct: 0.0465
+  most_drifted_feature: panel_age_yr
+  max_psi: 9.169
+  v1_version: '29'
+  v1_mae_per_group:
+    New Colony: 1.9315
+    Industrial: 1.9816
+    Old City: 6.182
+  v1_test_mae: 3.9208
+  worst_served_group: Old City
+  worst_group_mae: 6.182
+  v2_val_mae: 2.7582
+  v2_test_mae: 3.7979
+  improvement_ratio: 0.9686
+  promotion_threshold: 0.12
+  promoted: false
+  champion_version: '29'
+  champion_test_mae: 3.9208

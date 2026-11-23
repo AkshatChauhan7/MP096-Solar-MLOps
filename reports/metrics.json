@@ -1,0 +1,9 @@
+{
+  "best_model": "Ridge",
+  "best_cv_mae": 1.42056369882724,
+  "best_run_id": "10dc3bcfcdc948d590a098809bb1c7d9",
+  "registered_model_name": "solar-energy-model",
+  "champion_version": 37,
+  "data_sha256": "5c6df9ca6d99cb6164a6584701986dfc67674df0d45f3722bd960fa371c3da9d",
+  "n_samples": 1000
+}
