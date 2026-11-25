@@ -1,0 +1,19 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solar-mlops-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: solar-mlops-api
+  template:
+    metadata:
+      labels:
+        app: solar-mlops-api
+    spec:
+      containers:
+        - name: api
+          image: solar-mlops-api:stage3
+          ports:
+            - containerPort: 8000
