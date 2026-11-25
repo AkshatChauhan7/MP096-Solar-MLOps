@@ -24,6 +24,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt pytest fastapi uvicorn httpx pyyaml
 
+      - name: Prepare sample raw data for CI
+        run: |
+          mkdir -p data/raw
+          python -c "import pandas as pd; pd.DataFrame({'record_id': [1, 2, 3, 4], 'date': ['2025-01-01', '2025-01-02', '2025-01-03', '2025-01-04'], 'temp': [25.0, 28.0, 30.0, 27.0], 'humidity': [50.0, 45.0, 40.0, 48.0], 'wind_speed': [3.5, 4.0, 2.8, 3.2], 'irradiance': [400.0, 650.0, 800.0, 550.0], 'power_output': [100.0, 180.0, 240.0, 150.0]}).to_csv('data/raw/train.csv', index=False)"
+
       - name: Run tests
         run: pytest -v
 
