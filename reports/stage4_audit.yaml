@@ -2,7 +2,7 @@ group_id: G199
 problem_id: MP096
 branch: stage4
 phase1:
-  status: implemented_with_original_v1_integration_blocked
+  status: complete
   train_rows: 1000
   later_rows: 300
   holdout_rows: 250
@@ -11,24 +11,23 @@ phase1:
   holdout_sha256: 5a76fcf3130a336dab69615b9da9080b8d7811997273069174f19ecdc272b48c
   data_access: Original bytes restored; train/later match committed DVC MD5s.
   cleaning: Reuse src.cleaning.clean_data on train only; later is already clean.
-  psi_method: >-
-    Ten equal-width reference bins with open outer tails, epsilon 0.0001
-    replacing zero fractions, and an explicit missing bucket if necessary.
-    Constant references use below/equal/above buckets. All-missing references
-    raise an error. The P13 lab itself was not supplied, so its exact binning
-    convention could not be independently checked.
+  psi_method: Ten equal-width reference bins with open outer tails, epsilon 0.0001
+    replacing zero fractions, and an explicit missing bucket if necessary. Constant
+    references use below/equal/above buckets. All-missing references raise an error.
+    The P13 lab itself was not supplied, so its exact binning convention could not
+    be independently checked.
   original_v1:
     model_name: solar-power-predictor
     version: 1
     run_id: 562c0785de8b451f86b153c3ec4369cb
     model_id: m-ed7457e7f67044c59ad2d39cecb0b418
-    artifact_available: false
-    artifact_location: 'file:C:/Users/PRANSHU/Desktop/SEM 5/mlops_proj/2ndtry/MP096-Solar-MLOps/mlruns/1/models/m-ed7457e7f67044c59ad2d39cecb0b418/artifacts'
+    artifact_available: true
+    artifact_location: mlruns/1/models/m-ed7457e7f67044c59ad2d39cecb0b418/artifacts
+    artifact_sha256: a7a7440394f866a233d64bfc4eb33d5a0c9dc699b1a4162cce755016f8bfafd9
   existing_champion_version: 2
-  blocked_checks:
-    - Original v1 predictions on all 300 later rows
-    - Actual v1 MAE for each area and worst-served area
-  findings_policy: Compute PSI now; leave unavailable performance fields null.
+  blocked_checks: []
+  findings_policy: All monitoring values calculated from original assignment data
+    and recovered v1.
 stage3_audit:
   service: src/api.py returns constant zero predictions and loads no trained model.
   tests: API tests verify response shape, not real inference or the required schema.
@@ -37,28 +36,41 @@ stage3_audit:
   logging: Existing logging is plain text rather than JSON.
   scope: Stage 3 remains unchanged; these findings still need resolution before submission.
 other_existing_gaps:
-  - requirements.txt uses version ranges rather than pinned versions.
-  - Existing registered version 2 predates Stage 4; it must not be replaced.
-  - No DVC remote is configured; restore from original assignment folder locally.
+- requirements.txt uses version ranges rather than pinned versions.
+- Existing registered version 2 predates Stage 4; it must not be replaced.
+- No DVC remote is configured; restore from original assignment folder locally.
 retraining:
-  status: implemented_and_candidate_executed_final_integration_pending
+  status: complete
   candidate_report: reports/stage4_candidate.yaml
   training_rows: 1210
   later_check_rows: 90
   temporal_split: Stable date sort; first 210 later rows for fit, final 90 for check.
-  preprocessing: Reuse Stage 2 cleaner and model pipeline factory; fit preprocessing on eligible rows only.
-  registry_policy: >-
-    Preserve original solar-power-predictor versions 1 and 2 and its aliases.
-    After artifact recovery, publish a provenance-linked original v1 copy as
-    version 1 and retrained v2 as version 2 under solar-power-predictor-stage4.
-    findings tracking fields then identify the new namespace and actual champion.
-  promotion_rule: Promote only if v2 check MAE is at most 88% of positive v1 check MAE.
-  holdout_policy: Load the selected registry champion and preserve all holdout IDs and row order.
-  blocked_checks:
-    - tests/test_stage4_integration.py::test_actual_original_v1_area_mae
-    - tests/test_stage4_integration.py::test_actual_full_stage4_and_holdout
-  not_generated_yet:
-    - Actual original v1 area MAE and check MAE
-    - Actual promotion decision and selected Stage 4 champion
-    - predictions/holdout_predictions.csv
-    - models/model.joblib
+  preprocessing: Reuse Stage 2 cleaner and model pipeline factory; fit preprocessing
+    on eligible rows only.
+  registry_policy: Original solar-power-predictor versions 1 and 2, source run IDs
+    and champion alias preserved. Stage 4 publishes a provenance-linked copy of original
+    v1 and retrained v2 under solar-power-predictor-stage4.
+  promotion_rule: Promote only if v2 check MAE is at most 88% of positive v1 check
+    MAE.
+  holdout_policy: Load the selected registry champion and preserve all holdout IDs
+    and row order.
+  blocked_checks: []
+  not_generated_yet: []
+  final_report: reports/stage4_final.yaml
+artifact_relocation_report: reports/artifact_relocation.yaml
+environment_requirements: requirements-stage4.txt
+persistence_note: All restored artifact references use repository-relative paths.
+  Run commands from repository root; transfer ignored MLflow artifact stores separately
+  when reproducing registry loads.
+merge_check: Fetched origin main; dry-run merge-tree reported no conflicts; no merge
+  or push performed.
+validation:
+  test_command: RUN_STAGE4_INTEGRATION=1 python -m pytest -q -rs
+  passed: 146
+  skipped: 0
+  failed: 0
+  portability: Original v1 registry loading and exported champion predictions verified
+    in a different checkout directory.
+  holdout: 250 original record IDs in order; finite predictions match registry champion
+    and exported joblib.
+  history: Original model bytes, versions, aliases, runs, parameters and metrics retained.

@@ -7,10 +7,14 @@ artifact directory before running these tests.
 
 import copy
 import os
+import shutil
 import sqlite3
+import subprocess
+import sys
 from pathlib import Path
 
 import mlflow
+import numpy as np
 import pandas as pd
 import pytest
 import yaml
@@ -90,3 +94,43 @@ def test_actual_full_stage4_and_holdout(actual_config):
         else "keep"
     )
     assert results["decision"] == expected
+
+
+def test_actual_v1_and_export_work_from_another_checkout(actual_config, tmp_path):
+    """Registry v1 and exported champion must work after moving the checkout."""
+    with sqlite3.connect(tmp_path / "mlflow.db") as database:
+        location = database.execute(
+            "SELECT storage_location FROM model_versions WHERE name=? AND version=1",
+            (actual_config["model"]["name"],),
+        ).fetchone()[0]
+    assert not Path(location).is_absolute() and not location.startswith("file:")
+    shutil.copytree(ROOT / location, tmp_path / location)
+    (tmp_path / "models").mkdir(exist_ok=True)
+    shutil.copyfile(ROOT / "models/model.joblib", tmp_path / "models/model.joblib")
+    holdout = pd.read_csv(actual_config["holdout_path"])
+    holdout.to_csv(tmp_path / "holdout.csv", index=False)
+    original = load_v1_model(actual_config["model"])
+    np.savez(
+        tmp_path / "expected.npz",
+        v1=original.predict(holdout[FEATURE_COLUMNS]),
+        champion=pd.read_csv(ROOT / "predictions/holdout_predictions.csv").prediction.to_numpy(),
+    )
+    program = """
+import sys, joblib, mlflow, mlflow.sklearn, numpy as np, pandas as pd
+mlflow.set_tracking_uri('sqlite:///mlflow.db')
+mlflow.set_registry_uri('sqlite:///mlflow.db')
+v1=mlflow.sklearn.load_model('models:/'+sys.argv[1]+'/1')
+champion=joblib.load('models/model.joblib')
+x=pd.read_csv('holdout.csv')[list(v1.feature_names_in_)]
+expected=np.load('expected.npz')
+np.testing.assert_allclose(v1.predict(x),expected['v1'])
+np.testing.assert_allclose(champion.predict(x),expected['champion'])
+"""
+    completed = subprocess.run(
+        [sys.executable, "-c", program, actual_config["model"]["name"]],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert completed.returncode == 0, completed.stdout + completed.stderr

@@ -280,6 +280,8 @@ def test_synthetic_pipeline_preserves_original_versions_and_publishes_champion(
         findings = yaml.safe_load(Path(config["findings_path"]).read_text())
         assert findings["monitoring"]["decision"] == results["decision"]
         assert findings["tracking"]["registered_model_name"] == "stage4-model"
+        candidate_report = yaml.safe_load(Path(settings["candidate_report"]).read_text())
+        assert candidate_report["status"] == "comparison_complete"
         # Data changes invalidate a candidate before a comparison can proceed.
         Path(config["later_path"]).write_text("changed")
         with pytest.raises(ValueError, match="fingerprint mismatch"):

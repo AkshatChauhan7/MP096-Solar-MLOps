@@ -1,6 +1,6 @@
-status: candidate_trained_comparison_pending
-run_id: da59cc4b83414f0686dde2ddbfbeb22c
-model_uri: models:/m-35d736e6585c47909b99f7b0add56536
+status: comparison_complete
+run_id: c59b1d91ff5944c684df85fdfe1d3b8a
+model_uri: models:/m-a0cea2e18a13482fb7c24c2f363943e4
 data_sha256: 5c6df9ca6d99cb6164a6584701986dfc67674df0d45f3722bd960fa371c3da9d
 later_sha256: 8c12dc21ead8af8ee6c6ef2e07cd6b46962fd6284751ed95fb091c45edbe8469
 model_config:
@@ -8,7 +8,7 @@ model_config:
   params:
     alpha: 1.0
 candidate_path: models\stage4\candidate.joblib
-candidate_sha256: e2e5c977a164babe2622685f34316e05d7f97118e3724208482903805798db05
+candidate_sha256: 86f91e38f33c5df38fb4676cda638acfe005b15071be2f5f6d2897a6385e48ae
 train_rows: 1000
 later_fit_rows: 210
 later_check_rows: 90

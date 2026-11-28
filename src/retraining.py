@@ -7,6 +7,8 @@ The default run requires original v1 before publishing any final results.
 
 import argparse
 import hashlib
+import platform
+from importlib.metadata import version
 from pathlib import Path
 
 import joblib
@@ -336,10 +338,36 @@ def finalize(config: dict) -> dict:
                 "champion_version": champion_version,
                 "candidate_run_id": report["run_id"],
                 "holdout_rows": len(holdout),
+                "improvement_pct": (
+                    100
+                    * (maes["mae_v1_on_check"] - maes["mae_v2_on_check"])
+                    / maes["mae_v1_on_check"]
+                    if maes["mae_v1_on_check"] > 0
+                    else None
+                ),
+                "champion_sha256": sha256_file(champion_path),
+                "runtime": {
+                    "python": platform.python_version(),
+                    **{
+                        package: version(package)
+                        for package in (
+                            "mlflow",
+                            "scikit-learn",
+                            "numpy",
+                            "pandas",
+                            "scipy",
+                            "joblib",
+                        )
+                    },
+                },
             },
             sort_keys=False,
         ),
         encoding="utf-8",
+    )
+    report["status"] = "comparison_complete"
+    Path(settings["candidate_report"]).write_text(
+        yaml.safe_dump(report, sort_keys=False), encoding="utf-8"
     )
     return results
 

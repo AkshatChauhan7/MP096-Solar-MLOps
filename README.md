@@ -88,12 +88,21 @@ in original holdout order. It updates the monitoring and tracking fields in the
 assignment form. No final output or promotion result is generated while v1 is
 missing. Stage 3 has not been changed to serve this exported champion yet.
 
+The actual Stage 4 results are recorded in `reports/stage4_final.yaml` and
+`reports/findings.yaml`. The comparison kept original v1; the selected alias is
+`models:/solar-power-predictor-stage4@champion`. The versioned export and holdout
+CSV can be used without MLflow's artifact store. Registry reproduction requires
+the shared ignored `mlruns/` and `mlartifacts/` folders; retain
+`models/stage4/candidate.joblib` as well when handing off `--finalize` to a teammate.
+All database artifact paths are relative to the checkout. Original model files
+and registry versions have not been replaced. `requirements-stage4.txt` pins the
+evaluation environment, and the audit report records earlier-stage gaps.
+
 The normal test suite uses synthetic fixtures, including real isolated MLflow
 registration and both promotion outcomes. Actual-data integration is opt-in and
 uses a temporary copy of the registry and temporary output files:
 
 ```powershell
-$env:STAGE4_V1_ARTIFACT_DIR = 'D:\path\to\original-v1\artifacts'
 $env:RUN_STAGE4_INTEGRATION = '1'
 python -m pytest tests/test_stage4_integration.py -v
 ```
