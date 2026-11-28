@@ -1,0 +1,190 @@
+project: MP096 Solar MLOps
+group_id: G199
+datasets:
+  train:
+    rows: 1000
+    columns: 12
+  later:
+    rows: 300
+    columns: 12
+checks:
+  potential_target_leakage:
+    column: meter_reading_kwh
+    target: energy_kwh
+    datasets:
+      train:
+        correlation: 0.268314886239315
+        threshold: 0.95
+        potential_leakage: false
+      later:
+        correlation: 0.9992902388288075
+        threshold: 0.95
+        potential_leakage: true
+    interpretation: High correlation is a warning requiring investigation; correlation
+      alone does not prove target leakage.
+  unit_inconsistency_screening:
+    method: Broad physical plausibility range screening
+    bounds:
+      panel_area_m2:
+      - 0
+      - 1000
+      sunshine_hours:
+      - 0
+      - 24
+      temp_c:
+      - -50
+      - 60
+      cloud_cover_pct:
+      - 0
+      - 100
+      panel_age_yr:
+      - 0
+      - 100
+    datasets:
+      train:
+        out_of_range_values: {}
+        screening_passed: true
+      later:
+        out_of_range_values: {}
+        screening_passed: true
+    confirmed_unit_mixup: false
+    interpretation: Range violations are candidates for investigation, not automatic
+      proof of a unit mix-up. No unit conversion is applied.
+  sentinel_values:
+    column: dust_days
+    value: 9999
+    datasets:
+      train:
+        count: 43
+      later:
+        count: 0
+  duplicates:
+    train:
+      duplicate_rows: 0
+      duplicate_record_ids: 0
+    later:
+      duplicate_rows: 0
+      duplicate_record_ids: 0
+  stuck_sensor:
+    column: temp_c
+    minimum_rows_per_day: 2
+    minimum_consecutive_days: 5
+    detected_periods:
+    - start_date: '2026-05-02'
+      end_date: '2026-05-18'
+      consecutive_days: 17
+      temperature: 25.0
+      total_rows: 92
+  target_anomalies:
+    target_column: energy_kwh
+    comparison_column: meter_reading_kwh
+    ratio_range:
+    - 9.5
+    - 10.5
+    datasets:
+      train:
+        count: 10
+        records:
+        - record_id: R00197
+          date: '2026-02-04'
+          meter_reading_kwh: 38.75
+          energy_kwh: 385.8
+          energy_to_meter_ratio: 9.956129032258065
+        - record_id: R00201
+          date: '2026-02-04'
+          meter_reading_kwh: 26.58
+          energy_kwh: 267.0
+          energy_to_meter_ratio: 10.045146726862303
+        - record_id: R00302
+          date: '2026-02-20'
+          meter_reading_kwh: 41.32
+          energy_kwh: 409.5
+          energy_to_meter_ratio: 9.910454985479186
+        - record_id: R00339
+          date: '2026-02-26'
+          meter_reading_kwh: 29.74
+          energy_kwh: 292.2
+          energy_to_meter_ratio: 9.825151311365165
+        - record_id: R00487
+          date: '2026-03-25'
+          meter_reading_kwh: 37.72
+          energy_kwh: 380.3
+          energy_to_meter_ratio: 10.08218451749735
+        - record_id: R00512
+          date: '2026-03-31'
+          meter_reading_kwh: 28.75
+          energy_kwh: 290.7
+          energy_to_meter_ratio: 10.111304347826087
+        - record_id: R00543
+          date: '2026-04-08'
+          meter_reading_kwh: 23.48
+          energy_kwh: 233.9
+          energy_to_meter_ratio: 9.961669505962522
+        - record_id: R00595
+          date: '2026-04-20'
+          meter_reading_kwh: 32.2
+          energy_kwh: 326.7
+          energy_to_meter_ratio: 10.145962732919253
+        - record_id: R00640
+          date: '2026-04-27'
+          meter_reading_kwh: 31.46
+          energy_kwh: 309.4
+          energy_to_meter_ratio: 9.834710743801653
+        - record_id: R00675
+          date: '2026-05-02'
+          meter_reading_kwh: 30.88
+          energy_kwh: 307.2
+          energy_to_meter_ratio: 9.94818652849741
+      later:
+        count: 0
+        records: []
+    interpretation: These records are suspicious and should be reviewed before applying
+      the Stage 2 correction.
+  roof_type_variants:
+    column: roof_type
+    mapping:
+      tin: tin
+      tin.: tin
+      flat: flat
+      fla.: flat
+      sloped: sloped
+      slo.: sloped
+      slopped: sloped
+    datasets:
+      train:
+        raw_value_counts:
+          tin: 312
+          sloped: 294
+          flat: 244
+          ' tin': 14
+          TIN: 13
+          tin.: 12
+          FLAT: 12
+          slo.: 12
+          ' flat': 11
+          'flat ': 11
+          Tin: 11
+          'tin ': 11
+          ' sloped': 10
+          Sloped: 9
+          SLOPED: 9
+          'sloped ': 5
+          fla.: 5
+          Flat: 5
+        canonical_value_counts:
+          tin: 373
+          sloped: 339
+          flat: 288
+        unknown_values: []
+        canonical_levels: 3
+      later:
+        raw_value_counts:
+          sloped: 112
+          tin: 98
+          flat: 90
+        canonical_value_counts:
+          sloped: 112
+          tin: 98
+          flat: 90
+        unknown_values: []
+        canonical_levels: 3
