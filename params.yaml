@@ -1,0 +1,26 @@
+monitoring:
+  train_path: data/raw/train.csv
+  later_path: data/raw/later.csv
+  holdout_path: data/raw/holdout_features.csv
+  findings_path: reports/findings.yaml
+  predictions_path: reports/later_v1_predictions.csv
+  bins: 10
+  epsilon: 0.0001
+  model:
+    tracking_uri: sqlite:///mlflow.db
+    name: solar-power-predictor
+    v1_artifact_dir: mlruns/1/models/m-ed7457e7f67044c59ad2d39cecb0b418/artifacts
+  retraining:
+    tracking_uri: sqlite:///mlflow.db
+    experiment_name: solar-mlops-mp096-stage4
+    artifact_root: mlartifacts/stage4
+    registered_model_name: solar-power-predictor-stage4
+    model:
+      type: ridge
+      params:
+        alpha: 1.0
+    candidate_path: models/stage4/candidate.joblib
+    candidate_report: reports/stage4_candidate.yaml
+    final_report: reports/stage4_final.yaml
+    champion_path: models/model.joblib
+    holdout_predictions_path: predictions/holdout_predictions.csv

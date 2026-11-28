@@ -1,0 +1,31 @@
+status: complete
+psi:
+  panel_area_m2: 0.03886547610719745
+  sunshine_hours: 0.04804817585667126
+  temp_c: 0.06977704899781577
+  dust_days: 0.05141204005728907
+  panel_age_yr: 3.7360975724517136
+  cloud_cover_pct: 0.04794311915188857
+most_drifted_feature: panel_age_yr
+mae_by_group:
+  Old City: 6.1221794897120265
+  New Colony: 1.9684705221242826
+  Industrial: 1.9962968480576166
+worst_served_group: Old City
+mae_v1_on_check: 3.910639136502252
+mae_v2_on_check: 3.5642671397428294
+decision: keep
+registered_model_name: solar-power-predictor-stage4
+champion_version: 1
+candidate_run_id: c59b1d91ff5944c684df85fdfe1d3b8a
+holdout_rows: 250
+improvement_pct: 8.857171031874449
+champion_sha256: fcbdb2e6430d249bd4c7c8bfa4fc873f73dcc80fba8acea24df4a75026b3f3fe
+runtime:
+  python: 3.14.7
+  mlflow: 3.18.0
+  scikit-learn: 1.9.0
+  numpy: 2.4.3
+  pandas: 3.1.1
+  scipy: 1.18.0
+  joblib: 1.6.0

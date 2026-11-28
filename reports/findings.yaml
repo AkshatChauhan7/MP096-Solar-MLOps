@@ -42,25 +42,24 @@ data_issues:
     true_levels: 3
 
 tracking:
-  experiment_name: "solar-mlops-mp096"
-  best_run_id: "4b18e04cf5434cafbb7e8e2dd0dc9841"  # current best candidate by validation MAE
-  registered_model_name: "solar-power-predictor"
-  champion_version: 2
-
+  experiment_name: solar-mlops-mp096-stage4
+  best_run_id: 21680655517c4e7ca0bc238bc79e9431
+  registered_model_name: solar-power-predictor-stage4
+  champion_version: 1
 monitoring:
   psi:                     # cleaned train.csv vs later.csv, 10 bins
-    panel_area_m2: null
-    sunshine_hours: null
-    temp_c: null
-    dust_days: null
-    panel_age_yr: null
-    cloud_cover_pct: null
-  most_drifted_feature: null
+    panel_area_m2: 0.03886547610719745
+    sunshine_hours: 0.04804817585667126
+    temp_c: 0.06977704899781577
+    dust_days: 0.05141204005728907
+    panel_age_yr: 3.7360975724517136
+    cloud_cover_pct: 0.04794311915188857
+  most_drifted_feature: panel_age_yr
   mae_by_group:            # v1 on later.csv, per value of area
-    'Old City': null
-    'New Colony': null
-    'Industrial': null
-  worst_served_group: null
-  mae_v1_on_check: null    # v1 on the last 30% of later.csv (by date)
-  mae_v2_on_check: null    # v2 on the same rows
-  decision: null           # promote or keep
+    'Old City': 6.1221794897120265
+    'New Colony': 1.9684705221242826
+    'Industrial': 1.9962968480576166
+  worst_served_group: Old City
+  mae_v1_on_check: 3.910639136502252  # v1 on the last 30% of later.csv (by date)
+  mae_v2_on_check: 3.5642671397428294  # v2 on the same rows
+  decision: keep  # promote or keep

@@ -43,7 +43,8 @@ class TestSetupMLflow:
         mock_set_experiment.assert_called_once_with(EXPERIMENT_NAME)
 
     def test_default_tracking_uri(self):
-        with patch("src.mlflow_utils.mlflow.set_tracking_uri") as mock_set_uri:
+        with patch("src.mlflow_utils.mlflow.set_tracking_uri") as mock_set_uri, \
+                patch("src.mlflow_utils.mlflow.set_experiment"):
             setup_mlflow()
             mock_set_uri.assert_called_once_with(MLFLOW_TRACKING_URI)
 
