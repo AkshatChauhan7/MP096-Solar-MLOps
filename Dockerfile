@@ -7,9 +7,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 COPY requirements.txt ./
-RUN pip install --upgrade pip && pip install -r requirements.txt fastapi uvicorn
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY src/ ./src/
+COPY models/ ./models/
 
 EXPOSE 8000
 
