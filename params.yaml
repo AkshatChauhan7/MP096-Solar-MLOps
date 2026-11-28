@@ -1,0 +1,12 @@
+monitoring:
+  train_path: data/raw/train.csv
+  later_path: data/raw/later.csv
+  holdout_path: data/raw/holdout_features.csv
+  findings_path: reports/findings.yaml
+  predictions_path: reports/later_v1_predictions.csv
+  bins: 10
+  epsilon: 0.0001
+  model:
+    tracking_uri: sqlite:///mlflow.db
+    name: solar-power-predictor
+    v1_artifact_dir: null  # Or set STAGE4_V1_ARTIFACT_DIR to the original MLflow directory

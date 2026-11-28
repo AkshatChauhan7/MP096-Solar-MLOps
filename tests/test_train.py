@@ -15,7 +15,6 @@ from src.train import (
     CATEGORICAL_FEATURES,
     NUMERICAL_FEATURES,
     TARGET_COLUMN,
-    original_training_data_sha256,
 )
 
 
@@ -173,8 +172,9 @@ class TestFeatureColumns:
 class TestTrainIntegration:
     """Integration tests for training (mocked MLflow)."""
 
+    @patch("src.train.original_training_data_sha256", return_value="synthetic-training-hash")
     @patch("src.train.MLflowTracker")
-    def test_train_model_calls_mlflow(self, mock_tracker_class, tmp_path):
+    def test_train_model_calls_mlflow(self, mock_tracker_class, mock_hash, tmp_path):
         from src.train import train_model
 
         # Setup mock
@@ -214,7 +214,7 @@ class TestTrainIntegration:
         # Verify MLflow was called
         mock_tracker.log_params.assert_called()
         assert any(
-            call.args[0].get("data_sha256") == original_training_data_sha256()
+            call.args[0].get("data_sha256") == mock_hash.return_value
             for call in mock_tracker.log_params.call_args_list
         )
         mock_tracker.log_metrics.assert_called()

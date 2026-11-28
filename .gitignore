@@ -3,6 +3,7 @@
 .venv/
 venv/
 env/
+.venv-*/
 
 # macOS files
 .DS_Store
@@ -10,6 +11,19 @@ env/
 # Python cache
 __pycache__/
 *.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+data/processed/
+*.tmp
+mlflow.db-shm
+mlflow.db-wal
+.env
+.env.*
+!.env.example
 
 # MLflow artifacts (database will be committed)
 mlruns/
