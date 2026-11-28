@@ -1,4 +1,4 @@
-"""Opt-in actual-data integration, blocked until original v1 is supplied.
+"""Opt-in actual-data integration using the recovered original v1 artifact.
 
 Uses a temporary SQLite copy and temporary outputs, preserving the repository's
 registry and reports. Set RUN_STAGE4_INTEGRATION=1 and configure the original
@@ -24,7 +24,7 @@ pytestmark = [
     pytest.mark.integration,
     pytest.mark.skipif(
         os.environ.get("RUN_STAGE4_INTEGRATION") != "1",
-        reason="Blocked: original registered v1 artifact missing; opt in after recovery with RUN_STAGE4_INTEGRATION=1",
+        reason="Opt in to actual-data tests with restored v1 artifacts: RUN_STAGE4_INTEGRATION=1",
     ),
 ]
 

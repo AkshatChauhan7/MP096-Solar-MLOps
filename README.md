@@ -14,6 +14,17 @@
 
 Run commands from the repository root using the installed project environment:
 
+For reproducible evaluation, create an isolated environment and install
+`requirements-stage4.txt`. It matches the recovered artifact's scikit-learn,
+NumPy and SciPy versions; pandas 3.1.1 replaces the yanked pandas 3.0.4 recorded
+in the original manifest. The existing environment need not be changed.
+
+```powershell
+python -m venv .venv-stage4
+.venv-stage4/Scripts/python.exe -m pip install -r requirements-stage4.txt
+.venv-stage4/Scripts/Activate.ps1
+```
+
 ```powershell
 python -m src.data_access D:\G199_MP096
 python -m src.monitoring --psi-only
@@ -26,17 +37,21 @@ Only training data goes through the existing Stage 2 cleaner; later data is clea
 PSI uses ten equal-width training bins, open outer tails and epsilon 0.0001 for
 zero frequencies. The actual P13 lab was not included in the assignment folder.
 
-To run v1 monitoring after recovering the original MLflow artifact directory
-(including `MLmodel` and its serialized pipeline):
+The recovered artifact directory is configured with a repository-relative path
+in `params.yaml`. Restore the shared `mlruns` directory at the repository root.
+To relocate registry file paths and run original-v1 monitoring:
 
 ```powershell
-$env:STAGE4_V1_ARTIFACT_DIR = 'D:\path\to\original-v1\artifacts'
+python -m src.artifact_paths
 python -m src.monitoring
 ```
 
 The loader checks the artifact's run ID against registered version 1. Alternatively,
-set `monitoring.model.v1_artifact_dir` in `params.yaml`, or restore the registry's
-original artifact location. There is no fallback to champion, a new fit, or dummy
+set `STAGE4_V1_ARTIFACT_DIR` to override `monitoring.model.v1_artifact_dir` in
+`params.yaml`. Registry relocation updates only artifact locations for directories
+present inside the checkout, retaining original versions, runs, aliases and model
+bytes. Its reversible audit is `reports/artifact_relocation.yaml`. There is no
+fallback to champion, a new fit, or dummy
 predictions. See `reports/stage4_audit.yaml` for prerequisites and existing gaps.
 
 ## Stage 4 retraining and finalization

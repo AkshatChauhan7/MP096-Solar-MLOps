@@ -1,0 +1,55 @@
+- table: experiments
+  rowid: 1
+  column: artifact_location
+  original: file:C:/Users/PRANSHU/Desktop/SEM 5/mlops_proj/2ndtry/MP096-Solar-MLOps/mlruns/1
+  portable: mlruns/1
+- table: experiments
+  rowid: 3
+  column: artifact_location
+  original: file:///D:/MP096-Solar-MLOps/mlartifacts/stage4
+  portable: mlartifacts/stage4
+- table: logged_models
+  rowid: 2
+  column: artifact_location
+  original: file:C:/Users/PRANSHU/Desktop/SEM 5/mlops_proj/2ndtry/MP096-Solar-MLOps/mlruns/1/models/m-a5629dd9a98f4b82882b81aa12622678/artifacts
+  portable: mlruns/1/models/m-a5629dd9a98f4b82882b81aa12622678/artifacts
+- table: logged_models
+  rowid: 3
+  column: artifact_location
+  original: file:C:/Users/PRANSHU/Desktop/SEM 5/mlops_proj/2ndtry/MP096-Solar-MLOps/mlruns/1/models/m-cae582fdb9ac480b9ccb1c2ea264a9a1/artifacts
+  portable: mlruns/1/models/m-cae582fdb9ac480b9ccb1c2ea264a9a1/artifacts
+- table: logged_models
+  rowid: 4
+  column: artifact_location
+  original: file:C:/Users/PRANSHU/Desktop/SEM 5/mlops_proj/2ndtry/MP096-Solar-MLOps/mlruns/1/models/m-ed7457e7f67044c59ad2d39cecb0b418/artifacts
+  portable: mlruns/1/models/m-ed7457e7f67044c59ad2d39cecb0b418/artifacts
+- table: logged_models
+  rowid: 5
+  column: artifact_location
+  original: file:C:/Users/PRANSHU/Desktop/SEM 5/mlops_proj/2ndtry/MP096-Solar-MLOps/mlruns/1/models/m-08565084838348208e9ef86949cc0cf8/artifacts
+  portable: mlruns/1/models/m-08565084838348208e9ef86949cc0cf8/artifacts
+- table: logged_models
+  rowid: 6
+  column: artifact_location
+  original: file:C:/Users/PRANSHU/Desktop/SEM 5/mlops_proj/2ndtry/MP096-Solar-MLOps/mlruns/1/models/m-d076144b6a9c41a6973d2bd62580b7eb/artifacts
+  portable: mlruns/1/models/m-d076144b6a9c41a6973d2bd62580b7eb/artifacts
+- table: logged_models
+  rowid: 7
+  column: artifact_location
+  original: file:C:/Users/PRANSHU/Desktop/SEM 5/mlops_proj/2ndtry/MP096-Solar-MLOps/mlruns/1/models/m-c960df4e643a46988333d4b653693b0c/artifacts
+  portable: mlruns/1/models/m-c960df4e643a46988333d4b653693b0c/artifacts
+- table: logged_models
+  rowid: 8
+  column: artifact_location
+  original: file:///D:/MP096-Solar-MLOps/mlartifacts/stage4/models/m-35d736e6585c47909b99f7b0add56536/artifacts
+  portable: mlartifacts/stage4/models/m-35d736e6585c47909b99f7b0add56536/artifacts
+- table: model_versions
+  rowid: 1
+  column: storage_location
+  original: file:C:/Users/PRANSHU/Desktop/SEM 5/mlops_proj/2ndtry/MP096-Solar-MLOps/mlruns/1/models/m-ed7457e7f67044c59ad2d39cecb0b418/artifacts
+  portable: mlruns/1/models/m-ed7457e7f67044c59ad2d39cecb0b418/artifacts
+- table: model_versions
+  rowid: 2
+  column: storage_location
+  original: file:C:/Users/PRANSHU/Desktop/SEM 5/mlops_proj/2ndtry/MP096-Solar-MLOps/mlruns/1/models/m-c960df4e643a46988333d4b653693b0c/artifacts
+  portable: mlruns/1/models/m-c960df4e643a46988333d4b653693b0c/artifacts
