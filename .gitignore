@@ -28,3 +28,4 @@ mlflow.db-wal
 # MLflow artifacts (database will be committed)
 mlruns/
 mlartifacts/
+models/stage4/

@@ -97,6 +97,7 @@ def load_v1_model(config: dict | None = None):
     tracking_uri = config.get("tracking_uri", MLFLOW_TRACKING_URI)
     name = config.get("name", REGISTERED_MODEL_NAME)
     mlflow.set_tracking_uri(tracking_uri)
+    mlflow.set_registry_uri(tracking_uri)
     artifact_dir = os.environ.get("STAGE4_V1_ARTIFACT_DIR") or config.get("v1_artifact_dir")
     if artifact_dir:
         # A relocated MLflow artifact must identify the original v1 run. A bare

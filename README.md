@@ -38,3 +38,56 @@ The loader checks the artifact's run ID against registered version 1. Alternativ
 set `monitoring.model.v1_artifact_dir` in `params.yaml`, or restore the registry's
 original artifact location. There is no fallback to champion, a new fit, or dummy
 predictions. See `reports/stage4_audit.yaml` for prerequisites and existing gaps.
+
+## Stage 4 retraining and finalization
+
+```powershell
+# Train/log a real candidate without requiring v1 or changing registry aliases.
+python -m src.retraining --retrain-only
+
+# After configuring the original artifact directory, compare and finish.
+python -m src.retraining --finalize
+
+# Or retrain and finalize together, once v1 is available.
+python -m src.retraining
+```
+
+The candidate uses the existing Ridge pipeline with alpha 1.0, fitted on cleaned
+train plus the first 70% of later rows after stable date sorting. The final 30%
+is reserved for evaluation. Candidate data, model and split fingerprints prevent
+using stale results. Later targets are never passed through training typo fixes.
+`reports/stage4_candidate.yaml` records the actual run and candidate check MAE.
+The candidate artifact is local/ignored; on a fresh checkout, rerun training.
+
+Existing `solar-power-predictor` versions 1 and 2 and its champion alias are
+preserved. Finalization creates a separate `solar-power-predictor-stage4`
+registry entry: version 1 is a provenance-linked copy of the recovered original
+v1 pipeline, and version 2 is the retrained candidate. Only a check MAE at least
+12% lower promotes v2; a zero-MAE baseline is kept. Rerunning finalization with
+the same candidate reuses these versions. A different candidate requires a new
+Stage 4 registry name, so existing versions cannot be silently replaced.
+
+Finalization loads the selected `@champion`, exports `models/model.joblib`, and
+writes `predictions/holdout_predictions.csv` with exactly `record_id,prediction`
+in original holdout order. It updates the monitoring and tracking fields in the
+assignment form. No final output or promotion result is generated while v1 is
+missing. Stage 3 has not been changed to serve this exported champion yet.
+
+The normal test suite uses synthetic fixtures, including real isolated MLflow
+registration and both promotion outcomes. Actual-data integration is opt-in and
+uses a temporary copy of the registry and temporary output files:
+
+```powershell
+$env:STAGE4_V1_ARTIFACT_DIR = 'D:\path\to\original-v1\artifacts'
+$env:RUN_STAGE4_INTEGRATION = '1'
+python -m pytest tests/test_stage4_integration.py -v
+```
+
+On Windows, if DVC cannot create its system cache, point that cache inside the
+ignored repository cache before using DVC:
+
+```powershell
+$env:DVC_SITE_CACHE_DIR = Join-Path $PWD '.dvc/cache/site'
+$env:ITERATIVE_DO_NOT_TRACK = '1'
+python -m dvc status
+```

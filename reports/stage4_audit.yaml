@@ -40,3 +40,25 @@ other_existing_gaps:
   - requirements.txt uses version ranges rather than pinned versions.
   - Existing registered version 2 predates Stage 4; it must not be replaced.
   - No DVC remote is configured; restore from original assignment folder locally.
+retraining:
+  status: implemented_and_candidate_executed_final_integration_pending
+  candidate_report: reports/stage4_candidate.yaml
+  training_rows: 1210
+  later_check_rows: 90
+  temporal_split: Stable date sort; first 210 later rows for fit, final 90 for check.
+  preprocessing: Reuse Stage 2 cleaner and model pipeline factory; fit preprocessing on eligible rows only.
+  registry_policy: >-
+    Preserve original solar-power-predictor versions 1 and 2 and its aliases.
+    After artifact recovery, publish a provenance-linked original v1 copy as
+    version 1 and retrained v2 as version 2 under solar-power-predictor-stage4.
+    findings tracking fields then identify the new namespace and actual champion.
+  promotion_rule: Promote only if v2 check MAE is at most 88% of positive v1 check MAE.
+  holdout_policy: Load the selected registry champion and preserve all holdout IDs and row order.
+  blocked_checks:
+    - tests/test_stage4_integration.py::test_actual_original_v1_area_mae
+    - tests/test_stage4_integration.py::test_actual_full_stage4_and_holdout
+  not_generated_yet:
+    - Actual original v1 area MAE and check MAE
+    - Actual promotion decision and selected Stage 4 champion
+    - predictions/holdout_predictions.csv
+    - models/model.joblib

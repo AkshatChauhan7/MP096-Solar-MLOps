@@ -62,5 +62,5 @@ monitoring:
     'Industrial': null
   worst_served_group: null
   mae_v1_on_check: null    # v1 on the last 30% of later.csv (by date)
-  mae_v2_on_check: null    # v2 on the same rows
+  mae_v2_on_check: 3.5642671397428294  # v2 on the same rows
   decision: null           # promote or keep

@@ -10,3 +10,17 @@ monitoring:
     tracking_uri: sqlite:///mlflow.db
     name: solar-power-predictor
     v1_artifact_dir: null  # Or set STAGE4_V1_ARTIFACT_DIR to the original MLflow directory
+  retraining:
+    tracking_uri: sqlite:///mlflow.db
+    experiment_name: solar-mlops-mp096-stage4
+    artifact_root: mlartifacts/stage4
+    registered_model_name: solar-power-predictor-stage4
+    model:
+      type: ridge
+      params:
+        alpha: 1.0
+    candidate_path: models/stage4/candidate.joblib
+    candidate_report: reports/stage4_candidate.yaml
+    final_report: reports/stage4_final.yaml
+    champion_path: models/model.joblib
+    holdout_predictions_path: predictions/holdout_predictions.csv
